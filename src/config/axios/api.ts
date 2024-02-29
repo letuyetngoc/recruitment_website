@@ -14,3 +14,9 @@ export const callLogin = (values: LoginType) => {
 export const callRegister = (values: RegisterType) => {
     return axios.post<IBackendRes<IAccount>>(`/api/v1/auth/register`, values)
 }
+
+export const handleRefreshToken = async () => {
+    const res = await axios.get<IBackendRes<IAccount>>(`/api/v1/auth/refresh`);
+    if (res && res.data) return res.data.data?.access_token;
+    else return null;
+}

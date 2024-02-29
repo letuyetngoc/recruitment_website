@@ -1,19 +1,10 @@
 import axios from "axios";
-import { IAccount, IBackendRes } from "../../types/backend";
+import { handleRefreshToken } from "./api";
 
 const instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
     withCredentials: true //save cookie 
 });
-
-/**
- * get new access_token 
- */
-const handleRefreshToken = async () => {
-    const res = await axios.get<IBackendRes<IAccount>>(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/refresh`, { withCredentials: true })
-    if (res && res.data) return res.data.data?.access_token
-    else return null;
-}
 
 /**
  * config headers
@@ -35,11 +26,9 @@ instance.interceptors.request.use(function (config) {
 instance.interceptors.response.use(function (config) {
     return config;
 }, async function (error) {
-    if (error.config
-        && error.response
-        && error.response?.data?.statusCode === 401
-        && error.config.url !== '/api/v1/auth/login'
-    ) {
+
+    //hande case access_token expire
+    if (error.config && error.response && error.response?.data?.statusCode === 401 && error.config.url !== '/api/v1/auth/login') {
         const access_token = await handleRefreshToken();
         if (access_token) {
             error.config.headers['Authorization'] = `Bearer ${access_token}`;
@@ -47,6 +36,11 @@ instance.interceptors.response.use(function (config) {
             return instance.request(error.config);
         }
 
+    }
+
+    //handle case refresh_token expire
+    if (error.config && error.response && error.response?.data?.statusCode === 400 && error.config.url === '/api/v1/auth/refresh') {
+        return error.response.data
     }
     return error?.response?.data ?? Promise.reject(error);
 });
