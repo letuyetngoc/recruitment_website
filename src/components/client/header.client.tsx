@@ -7,6 +7,7 @@ import { Menu, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Header } from "antd/es/layout/layout";
 import './header.client.css'
+import Link from "next/link";
 const HeaderPage = () => {
     const [open, setOpen] = useState(false);
     const showDrawer = () => {
@@ -20,7 +21,7 @@ const HeaderPage = () => {
             <Layout>
                 <Header className="nav-header" >
                     <div className="logo">
-                        <span className="brand-font">ngCV</span>
+                        <Link href={'/home'} className="brand-font">ngCV</Link>
                     </div>
                     <div className="navbar-menu">
                         <div className="leftMenu">
@@ -49,7 +50,7 @@ const HeaderPage = () => {
 };
 type MenuMode = 'horizontal' | 'vertical' | 'inline';
 const LeftMenu = ({ mode }: { mode: MenuMode }) => {
-    const items = [{ key: 1, label: 'Trang chủ' }, { key: 2, label: 'Việc làm IT' }, { key: 3, label: 'Top công ty IT' }]
+    const items = [{ key: 1, label: <Link href={'/home'}>Trang chủ</Link> }, { key: 2, label: <Link href={'/job'}>Việc làm IT</Link> }, { key: 3, label: <Link href={'/company'}>Top công ty IT</Link> }]
     return (
         <Menu
             mode={mode}

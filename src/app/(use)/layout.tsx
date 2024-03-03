@@ -8,8 +8,10 @@ interface RootLayoutProps {
 function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
-      <HeaderPage/>
+      <HeaderPage />
+      <div className="container">
         {children}
+      </div>
     </>
   );
 }

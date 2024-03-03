@@ -8,7 +8,7 @@ import { Divider } from "antd";
 
 const HomePage = () => {
   return (
-    <div className="container">
+    <div>
       <SearchHome />
       <Divider />
       <CompanyList />
