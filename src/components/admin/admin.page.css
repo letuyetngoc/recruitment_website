@@ -1,0 +1,8 @@
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
