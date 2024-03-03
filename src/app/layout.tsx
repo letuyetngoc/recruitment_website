@@ -1,4 +1,5 @@
 import React from "react";
+import '../styles/app.css'
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import StyledComponentsRegistry from "../AntdRegistry";
