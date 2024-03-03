@@ -134,7 +134,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', width:'100%' }}>
+      <div>
         <Row gutter={16}>
           <Col span={12}>
             <Space style={{ width: '100%' }} direction="vertical">
@@ -177,7 +177,7 @@ const App: React.FC = () => {
       </div>
       <Row justify={'center'} align={'middle'}>
         <Col span={12}>
-          <Title style={{ margin: '20px 0', }} level={4}>Danh sách công ty</Title>
+          <Title style={{ margin: '20px 0', }} level={4}>Danh sách Company</Title>
         </Col>
         <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
           <Button type="primary" icon={<PlusOutlined />}>Thêm mới</Button>
