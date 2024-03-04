@@ -3,23 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Row, Select, Space, Table, Typography } from 'antd';
 import type { GetProp, SelectProps, TableProps } from 'antd';
 import { DeleteOutlined, EditOutlined, EnvironmentOutlined, MailOutlined, MonitorOutlined, PlusOutlined } from '@ant-design/icons';
+import { getAllUsers } from '../../../config/axios/api';
+import { IUser } from '../../../types/backend';
+import CreateUserModal from './createUser';
 
 const { Title } = Typography
 
 type ColumnsType<T> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
-
-interface DataType {
-  name: {
-    first: string;
-    last: string;
-  };
-  gender: string;
-  email: string;
-  login: {
-    uuid: string;
-  };
-}
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -28,17 +19,16 @@ interface TableParams {
   filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
 }
 
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<IUser> = [
   {
     title: 'STT',
     dataIndex: 'stt',
     sorter: true,
     render: (value, record, index) => index + 1,
-    width: '20%',
   },
   {
     title: 'id',
-    dataIndex: 'id',
+    dataIndex: '_id',
     width: '20%',
   },
   {
@@ -61,17 +51,11 @@ const columns: ColumnsType<DataType> = [
     title: 'Action',
     dataIndex: 'action',
     render: () => <>
-      <EditOutlined style={{ color: 'blue' }} />
-      <DeleteOutlined style={{ color: 'red' }} />
+      <EditOutlined style={{ color: 'blue', marginRight: '10px', cursor: 'pointer' }} />
+      <DeleteOutlined style={{ color: 'red', cursor: 'pointer' }} />
     </>
   },
 ];
-
-const getRandomuserParams = (params: TableParams) => ({
-  results: params.pagination?.pageSize,
-  page: params.pagination?.current,
-  ...params,
-});
 
 const options: SelectProps['options'] = [];
 
@@ -86,34 +70,33 @@ const handleChange = (value: string[]) => {
   console.log(`selected ${value}`);
 };
 
-const App: React.FC = () => {
-  const [data, setData] = useState<DataType[]>();
+const Page = () => {
+  const [data, setData] = useState<IUser[]>();
   const [loading, setLoading] = useState(false);
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
-      pageSize: 10,
+      pageSize: 6,
     },
   });
+  const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
 
-  const fetchData = () => {
-    // setLoading(true);
-    // fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
-    //   .then((res) => res.json())
-    //   .then(({ results }) => {
-    //     setData(results);
-    //     setLoading(false);
-    //     setTableParams({
-    //       ...tableParams,
-    //       pagination: {
-    //         ...tableParams.pagination,
-    //         total: 200,
-    //         // 200 is mock data, you should read it from server
-    //         // total: data.totalCount,
-    //       },
-    //     });
-    //   });
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await getAllUsers(tableParams.pagination?.current!, tableParams.pagination?.pageSize!)
+    if (res.data.statusCode === 200) {
+      setData(res.data.data?.result);
+      setLoading(false);
+      setTableParams({
+        ...tableParams,
+        pagination: {
+          ...tableParams.pagination,
+          total: res.data.data?.meta.total,
+        },
+      });
+    }
   };
+
 
   useEffect(() => {
     fetchData();
@@ -180,19 +163,20 @@ const App: React.FC = () => {
           <Title style={{ margin: '20px 0', }} level={4}>Danh sách Users</Title>
         </Col>
         <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
-          <Button type="primary" icon={<PlusOutlined />}>Thêm mới</Button>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsOpenCreateModal(true)}>Thêm mới</Button>
         </Col>
       </Row>
       <Table
         columns={columns}
-        rowKey={(record) => record.login.uuid}
+        rowKey={(record) => record._id!}
         dataSource={data}
         pagination={tableParams.pagination}
         loading={loading}
         onChange={handleTableChange}
       />
+      <CreateUserModal isOpenCreateModal={isOpenCreateModal} setIsOpenCreateModal={setIsOpenCreateModal}/>
     </>
   );
 };
 
-export default App;
+export default Page;

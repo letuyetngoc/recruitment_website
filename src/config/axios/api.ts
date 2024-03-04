@@ -1,4 +1,4 @@
-import { IAccount, IBackendRes } from "../../types/backend"
+import { IAccount, IBackendRes, ICompany, IModelPaginate, IRole, IUser } from "../../types/backend"
 import { RegisterType } from "../../app/auth/register/page"
 import { LoginType } from "../../app/auth/login/page"
 import axios from "../../config/axios/axios-customize"
@@ -19,4 +19,24 @@ export const handleRefreshToken = async () => {
     const res = await axios.get<IBackendRes<IAccount>>(`/api/v1/auth/refresh`);
     if (res && res.data) return res.data.data?.access_token;
     else return null;
+}
+
+/**
+ * Module Admin
+ */
+
+export const getAllUsers = (current: number, pageSize: number) => {
+    return axios.get<IBackendRes<IModelPaginate<IUser>>>(`api/v1/users?current=${current}&pageSize=${pageSize}`)
+}
+
+export const getAllCompanies = (current: number, pageSize: number) => {
+    return axios.get<IBackendRes<IModelPaginate<ICompany>>>(`api/v1/companies?current=${current}&pageSize=${pageSize}`)
+}
+
+export const getAllRoles = (current: number, pageSize: number) => {
+    return axios.get<IBackendRes<IModelPaginate<IRole>>>(`api/v1/roles?current=${current}&pageSize=${pageSize}`)
+}
+
+export const createUser = (user: IUser) => {
+    return axios.post<IBackendRes<IUser>>(`api/v1/users`, user)
 }

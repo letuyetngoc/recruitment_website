@@ -4,7 +4,15 @@ export interface IBackendRes<T> {
     statusCode: number | string;
     data?: T;
 }
-
+export interface IModelPaginate<T> {
+    meta: {
+        current: number;
+        pageSize: number;
+        pages: number;
+        total: number;
+    },
+    result: T[]
+}
 export interface IAccount {
     access_token: string;
     user: {
@@ -23,4 +31,53 @@ export interface IAccount {
             module: string;
         }[]
     }
+}
+
+export interface IUser {
+    _id?: string;
+    name: string;
+    email: string;
+    password?: string;
+    age: number;
+    gender: string;
+    address: string;
+    role?: {
+        _id: string;
+        name: string;
+    }
+
+    company?: {
+        _id: string;
+        name: string;
+    }
+    createdBy?: string;
+    isDeleted?: boolean;
+    deletedAt?: boolean | null;
+    createdAt?: string;
+    updatedAt?: string;
+}
+export interface ICompany {
+    _id?: string;
+    name?: string;
+    address?: string;
+    logo: string;
+    description?: string;
+    createdBy?: string;
+    isDeleted?: boolean;
+    deletedAt?: boolean | null;
+    createdAt?: string;
+    updatedAt?: string;
+}
+export interface IRole {
+    _id?: string;
+    name: string;
+    description: string;
+    isActive: boolean;
+    permissions: IPermission[] | string[];
+
+    createdBy?: string;
+    isDeleted?: boolean;
+    deletedAt?: boolean | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
