@@ -25,8 +25,8 @@ export const handleRefreshToken = async () => {
  * Module Admin
  */
 
-export const getAllUsers = (current: number, pageSize: number) => {
-    return axios.get<IBackendRes<IModelPaginate<IUser>>>(`api/v1/users?current=${current}&pageSize=${pageSize}`)
+export const getAllUsers = (query: string) => {
+    return axios.get<IBackendRes<IModelPaginate<IUser>>>(`api/v1/users?${query}`)
 }
 
 export const getAllCompanies = (current: number, pageSize: number) => {
@@ -37,6 +37,22 @@ export const getAllRoles = (current: number, pageSize: number) => {
     return axios.get<IBackendRes<IModelPaginate<IRole>>>(`api/v1/roles?current=${current}&pageSize=${pageSize}`)
 }
 
+export const getRoleById = (id: string) => {
+    return axios.get<IBackendRes<IRole>>(`api/v1/roles/${id}`)
+}
+
 export const createUser = (user: IUser) => {
     return axios.post<IBackendRes<IUser>>(`api/v1/users`, user)
+}
+
+export const updateUser = (user: IUser) => {
+    return axios.patch<IBackendRes<IUser>>(`api/v1/users`, user)
+}
+
+export const deleteUser = (_id: string) => {
+    return axios.delete<IBackendRes<IUser>>(`api/v1/users/${_id}`)
+}
+
+export const getUserById = (_id: string) => {
+    return axios.get<IBackendRes<IUser>>(`api/v1/users/${_id}`)
 }

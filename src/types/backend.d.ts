@@ -44,8 +44,7 @@ export interface IUser {
     role?: {
         _id: string;
         name: string;
-    }
-
+    } | string
     company?: {
         _id: string;
         name: string;

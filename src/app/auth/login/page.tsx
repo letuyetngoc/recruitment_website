@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
    */
   const onFinish = async (values: LoginType) => {
     const res = await callLogin(values);
-    if (res.data.statusCode === 201) {
+    if (res.data && res.data.data) {
       router.push('/home');
       localStorage.setItem('access_token', res.data.data?.access_token!);
     }
