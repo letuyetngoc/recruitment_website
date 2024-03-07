@@ -14,6 +14,7 @@ import {
 import { Layout, Menu, Button, theme } from 'antd';
 import './admin.page.css'
 import Link from 'next/link';
+import { usePathname } from 'next/navigation'
 
 interface RootLayoutProps {
     children: React.ReactNode;
@@ -23,49 +24,55 @@ const { Header, Sider, Content } = Layout;
 
 const AdminPage = ({ children }: RootLayoutProps) => {
     const [collapsed, setCollapsed] = useState(false);
-    const {
-        token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
+    const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
+    const pathname = usePathname()
+
     return (
         <Layout style={{ height: '100vh' }}>
-            <Sider trigger={null} collapsible collapsed={collapsed} style={{ padding: 0, background: colorBgContainer }}>
+            <Sider trigger={null} collapsible collapsed={collapsed} style={{ padding: 0, background: colorBgContainer }}
+                breakpoint="lg"
+                collapsedWidth="0"
+                onBreakpoint={(broken) => {
+                    setCollapsed(broken ? true : false)
+                }}
+            >
                 <Link href='/home' className='logo'>ngCV</Link>
                 <Menu
                     mode="inline"
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={[pathname]}
                     items={[
                         {
-                            key: '1',
+                            key: '/admin',
                             icon: <AppstoreOutlined />,
                             label: <Link href='/admin'>Dashboard</Link>,
                         },
                         {
-                            key: '2',
+                            key: '/admin/company',
                             icon: <BankOutlined />,
                             label: <Link href='/admin/company'>Company</Link>,
                         },
                         {
-                            key: '3',
+                            key: '/admin/user',
                             icon: <UserOutlined />,
                             label: <Link href='/admin/user'>User</Link>,
                         },
                         {
-                            key: '4',
+                            key: '/admin/job',
                             icon: <ScheduleOutlined />,
                             label: <Link href='/admin/job'>Job</Link>,
                         },
                         {
-                            key: '5',
+                            key: '/admin/resume',
                             icon: <AliwangwangOutlined />,
                             label: <Link href='/admin/resume'>Resume</Link>,
                         },
                         {
-                            key: '6',
+                            key: '/admin/permission',
                             icon: <ApiOutlined />,
                             label: <Link href='/admin/permission'>Permission</Link>,
                         },
                         {
-                            key: '7',
+                            key: '/admin/role',
                             icon: <ExceptionOutlined />,
                             label: <Link href='/admin/role'>Role</Link>,
                         },

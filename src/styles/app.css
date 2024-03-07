@@ -1,7 +1,66 @@
-html, body {
+html,
+body {
     padding: 0;
     margin: 0;
 }
-.container{
-    margin: 0 70px ;
+
+.ant-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .searchbar {
+        width: 50%;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-button {
+        width: 8px;
+        height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgb(255, 255, 255);
+        border: thin solid rgb(238, 238, 238);
+        box-shadow: 0px 0px 3px #dfdfdf inset;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border: thin solid #ccc;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #7d7d7d;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .searchbar {
+        width: 30%;
+    }
+
+    .container {
+        width: 970px;
+        margin: 0 auto;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .container {
+        width: 1260px;
+        margin: 0 auto;
+    }
 }

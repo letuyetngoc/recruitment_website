@@ -35,7 +35,7 @@ interface IForm {
     address: string
 }
 
-export default function UserModal(props: IProp) {
+export default function CompanyModal(props: IProp) {
     const { isOpenModal, setIsOpenModal, userInit, setUserInit, fetchData } = props;
     const hasMounted = useHasMounted()
     const [companies, setCompanies] = useState<ICompanySelect[]>();

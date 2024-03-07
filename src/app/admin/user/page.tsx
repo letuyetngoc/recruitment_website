@@ -154,8 +154,8 @@ const Page = () => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', width: '30%' }}>
-          <Search placeholder="input name to search" enterButton="Search"
+        <div className='searchbar' style={{ display: 'flex', justifyContent: 'center'}}>
+          <Search placeholder="input name to search" enterButton 
             onChange={e => setName(e.target.value)}
           />
         </div>
@@ -167,10 +167,10 @@ const Page = () => {
       </div>
       <Row justify={'center'} align={'middle'}>
         <Col span={12}>
-          <Title style={{ margin: '20px 0', }} level={4}>Danh sách Users</Title>
+          <Title style={{ margin: '20px 0' }} level={4}>List Users</Title>
         </Col>
         <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsOpenModal(true)}>Thêm mới</Button>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsOpenModal(true)}>Add</Button>
         </Col>
       </Row>
       <Table
