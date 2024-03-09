@@ -11,6 +11,10 @@ export const callLogin = (values: LoginType) => {
     return axios.post<IBackendRes<IAccount>>(`/api/v1/auth/login`, values)
 }
 
+export const callLogout = () => {
+    return axios.post<IBackendRes<string>>(`/api/v1/auth/logout`)
+}
+
 export const callRegister = (values: RegisterType) => {
     return axios.post<IBackendRes<IAccount>>(`/api/v1/auth/register`, values)
 }

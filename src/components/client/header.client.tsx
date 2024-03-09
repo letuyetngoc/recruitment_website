@@ -1,13 +1,15 @@
 
 'use client'
-import React, { useState } from "react";
-import { Layout, Button, Drawer, Dropdown, MenuProps } from "antd";
+import React, { useEffect, useState } from "react";
+import { Layout, Button, Drawer, Dropdown, MenuProps, message } from "antd";
 import { DownOutlined, MenuOutlined } from "@ant-design/icons";
 import { Menu, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Header } from "antd/es/layout/layout";
 import './header.client.css'
 import Link from "next/link";
+import { callLogout } from "../../config/axios/api";
+import { useRouter } from "next/navigation";
 const HeaderPage = () => {
     const [open, setOpen] = useState(false);
     const showDrawer = () => {
@@ -60,7 +62,23 @@ const LeftMenu = ({ mode }: { mode: MenuMode }) => {
         />
     );
 };
-const RightMenu = () => {
+export const RightMenu = () => {
+    const router = useRouter()
+    const [isLogged, setIsLogged] = useState(false);
+
+    useEffect(() => {
+        setIsLogged(localStorage.getItem('access_token') ? true : false)
+    }, [localStorage.getItem('access_token')])
+
+    const handleLogout = async () => {
+        const res = await callLogout();
+        if (res && res.data) {
+            localStorage.removeItem('access_token')
+            message.success('Logout success');
+            router.push('/')
+        }
+    }
+
     const items: MenuProps['items'] = [
         {
             key: '1',
@@ -73,32 +91,38 @@ const RightMenu = () => {
         {
             key: '2',
             label: (
-                <a target="_blank" >
-                    2nd menu item
-                </a>
+                <Link href='/admin' >
+                    Admin page
+                </Link>
             ),
         },
         {
             key: '3',
             label: (
-                <a target="_blank" >
+                <span style={{ cursor: 'pointer' }} onClick={() => handleLogout()}>
                     Logout
-                </a>
+                </span>
             ),
         },
     ];
+
     return (
         <>
-            <Dropdown menu={{ items }} placement="bottomRight" trigger={['click']} className="dropdown">
-                <div className="avatar">
-                    <Avatar icon={<UserOutlined />} />
-                    <span className="username">John Doe</span>
-                    <DownOutlined className="downOutlined-icon" />
-                </div>
-            </Dropdown>
-            {/* <div className="avatar">
-                <span>Đăng nhập/ Đăng kí</span>
-            </div> */}
+            {
+                isLogged
+                    ?
+                    <Dropdown menu={{ items }} placement="bottomRight" trigger={['click']} className="dropdown">
+                        <div className="avatar">
+                            <Avatar icon={<UserOutlined />} />
+                            <span className="username">John Doe</span>
+                            <DownOutlined className="downOutlined-icon" />
+                        </div>
+                    </Dropdown>
+                    :
+                    <div className="avatar">
+                        <Link href={'/login'}>Đăng nhập/ Đăng kí</Link>
+                    </div>
+            }
         </>
     );
 };

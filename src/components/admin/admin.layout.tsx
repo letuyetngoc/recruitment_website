@@ -5,16 +5,18 @@ import {
     ApiOutlined,
     AppstoreOutlined,
     BankOutlined,
+    DownOutlined,
     ExceptionOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     ScheduleOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Button, theme } from 'antd';
+import { Layout, Menu, Button, theme, Dropdown, Avatar, MenuProps, message } from 'antd';
 import './admin.page.css'
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { callLogout } from '../../config/axios/api';
 
 interface RootLayoutProps {
     children: React.ReactNode;
@@ -24,8 +26,37 @@ const { Header, Sider, Content } = Layout;
 
 const AdminPage = ({ children }: RootLayoutProps) => {
     const [collapsed, setCollapsed] = useState(false);
+    const router = useRouter();
     const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
     const pathname = usePathname()
+
+    const handleLogout = async () => {
+        const res = await callLogout();
+        if (res && res.data) {
+            localStorage.removeItem('access_token')
+            message.success('Logout success');
+            router.push('/')
+        }
+    }
+
+    const items: MenuProps['items'] = [
+        {
+            key: '1',
+            label: (
+                <a target="_blank" >
+                    Profile
+                </a>
+            ),
+        },
+        {
+            key: '3',
+            label: (
+                <span style={{ cursor: 'pointer' }} onClick={() => handleLogout()} >
+                    Logout
+                </span>
+            ),
+        },
+    ];
 
     return (
         <Layout style={{ height: '100vh' }}>
@@ -36,7 +67,7 @@ const AdminPage = ({ children }: RootLayoutProps) => {
                     setCollapsed(broken ? true : false)
                 }}
             >
-                <Link href='/home' className='logo'>ngCV</Link>
+                <Link href='/' className='logo'>ngCV</Link>
                 <Menu
                     mode="inline"
                     defaultSelectedKeys={[pathname]}
@@ -80,7 +111,7 @@ const AdminPage = ({ children }: RootLayoutProps) => {
                 />
             </Sider>
             <Layout>
-                <Header style={{ padding: 0, background: colorBgContainer }}>
+                <Header style={{ padding: 0, background: colorBgContainer, display: 'flex', justifyContent: 'space-between' }}>
                     <Button
                         type="text"
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -91,6 +122,11 @@ const AdminPage = ({ children }: RootLayoutProps) => {
                             height: 64,
                         }}
                     />
+                    <Dropdown menu={{ items }} placement="bottomRight" trigger={['click']} className="dropdown">
+                        <div style={{ width: 64, height: 64, cursor: 'pointer' }}>
+                            <Avatar icon={<UserOutlined />} />
+                        </div>
+                    </Dropdown>
                 </Header>
                 <Content
                     style={{
