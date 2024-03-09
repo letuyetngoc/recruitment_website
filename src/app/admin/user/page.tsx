@@ -10,6 +10,7 @@ import { useDebounce } from '../../../config/hook/customHook';
 import queryString from 'query-string';
 import { PAGE_SIZE } from '../../../config/constants';
 import UserModal from './user.modal';
+import dayjs from 'dayjs';
 
 const { Title } = Typography
 
@@ -37,6 +38,8 @@ const Page = () => {
   const [email, setEmail] = useState<string | null>(null)
   const debouncedEmailSearch = useDebounce<string | null>(email, 800)
   const debouncedNameSearch = useDebounce<string | null>(name, 800)
+
+  console.log('tableParams.pagination user', tableParams.pagination)
 
   //fetch data user for table
   useEffect(() => {
@@ -112,12 +115,14 @@ const Page = () => {
       dataIndex: 'email',
     },
     {
-      title: 'CreatedAt',
+      title: 'Created at',
       dataIndex: 'createdAt',
+      render: (value, company, index) => dayjs(value).format('DD-MM-YYYY HH:mm:ss')
     },
     {
-      title: 'UpdatedAt',
+      title: 'Updated at',
       dataIndex: 'updatedAt',
+      render: (value, company, index) => dayjs(value).format('DD-MM-YYYY HH:mm:ss')
     },
     {
       title: 'Action',

@@ -1,9 +1,10 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { Modal, Form, Input, InputNumber, Select, Button, Row, Col, Typography, message } from 'antd';
-import { createUser, getAllCompanies, getAllRoles, updateUser } from '../../../config/axios/api';
-import { IUser } from '../../../types/backend';
+import { createUser, getAllRoles, updateUser } from '../../../config/axios/api';
+import { IBackendRes, ICompany, IModelPaginate, IUser } from '../../../types/backend';
 import { useHasMounted } from '../../../utils/customHook';
+import axios from "../../../config/axios/axios-customize"
 const { Title } = Typography
 
 interface IProp {
@@ -128,7 +129,7 @@ export default function UserModal(props: IProp) {
     }
 
     const fetchListCompanies = async () => {
-        const res = await getAllCompanies(1, 100)
+        const res = await axios.get<IBackendRes<IModelPaginate<ICompany>>>(`api/v1/companies?current=1&pageSize=100`)
         if (res.data && res.data.data) {
             const list = res.data.data?.result
             const result = list?.map(item => ({
