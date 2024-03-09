@@ -21,7 +21,7 @@ function RootLayout({ children }: RootLayoutProps) {
       <body className={inter.className}>
         <StyledComponentsRegistry>
           {children}
-          </StyledComponentsRegistry>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

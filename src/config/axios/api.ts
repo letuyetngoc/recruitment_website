@@ -1,7 +1,7 @@
 import { IAccount, IBackendRes, ICompany, IModelPaginate, IRole, IUser } from "../../types/backend"
-import { RegisterType } from "../../app/auth/register/page"
-import { LoginType } from "../../app/auth/login/page"
 import axios from "../../config/axios/axios-customize"
+import { LoginType } from "../../app/(auth)/login/page"
+import { RegisterType } from "../../app/(auth)/register/page"
 
 /**
  * Module Auth

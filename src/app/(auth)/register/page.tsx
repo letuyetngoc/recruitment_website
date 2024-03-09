@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
   const onFinish = async (values: RegisterType) => {
     const res = await callRegister(values);
     if (res.data.statusCode === 201) {
-      router.push('/auth/login');
+      router.push('/login');
     }
   };
 
@@ -95,7 +95,7 @@ const LoginPage: React.FC = () => {
         <div style={{ textAlign: 'center' }}>
           <p className="text text-normal">Đã có có tài khoản ?
             <span>
-              <Link href='/auth/login' > Đăng nhập </Link>
+              <Link href='/login' > Đăng nhập </Link>
             </span>
           </p>
         </div>
