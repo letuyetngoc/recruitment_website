@@ -33,6 +33,23 @@ export interface IAccount {
     }
 }
 
+export interface IGetAccount {
+    _id: string;
+    email: string;
+    name: string;
+    role: {
+        _id: string;
+        name: string;
+    }
+    permissions: {
+        _id: string;
+        name: string;
+        apiPath: string;
+        method: string;
+        module: string;
+    }[]
+}
+
 export interface IUser {
     _id?: string;
     name: string;

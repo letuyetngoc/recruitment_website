@@ -3,6 +3,7 @@ import '../styles/app.css'
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import StyledComponentsRegistry from "../AntdRegistry";
+import StoreProvider from "./StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ function RootLayout({ children }: RootLayoutProps) {
     <html lang="en">
       <body className={inter.className}>
         <StyledComponentsRegistry>
-          {children}
+          <StoreProvider>
+            {children}
+          </StoreProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

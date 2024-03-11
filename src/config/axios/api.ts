@@ -1,4 +1,4 @@
-import { IAccount, IBackendRes, ICompany, IModelPaginate, IRole, IUser } from "../../types/backend"
+import { IAccount, IBackendRes, ICompany, IGetAccount, IModelPaginate, IRole, IUser } from "../../types/backend"
 import axios from "../../config/axios/axios-customize"
 import { LoginType } from "../../app/(auth)/login/page"
 import { RegisterType } from "../../app/(auth)/register/page"
@@ -17,6 +17,10 @@ export const callLogout = () => {
 
 export const callRegister = (values: RegisterType) => {
     return axios.post<IBackendRes<IAccount>>(`/api/v1/auth/register`, values)
+}
+
+export const getAccount = () => {
+    return axios.get<IBackendRes<IGetAccount>>(`/api/v1/auth/account`)
 }
 
 export const handleRefreshToken = async () => {

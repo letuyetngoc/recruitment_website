@@ -142,7 +142,6 @@ export default function CompanyModal(props: IProp) {
                 setImageUrl(url);
             });
             const res = await uploadFile(info.file.originFileObj, 'company')
-            console.log('res', res)
             if (res.data && res.data.data) {
                 message.success('Upload image success!')
                 setLogoName(res.data.data.fileName)

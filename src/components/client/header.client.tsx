@@ -8,8 +8,10 @@ import { UserOutlined } from "@ant-design/icons";
 import { Header } from "antd/es/layout/layout";
 import './header.client.css'
 import Link from "next/link";
-import { callLogout } from "../../config/axios/api";
+import { callLogout, getAccount } from "../../config/axios/api";
 import { useRouter } from "next/navigation";
+import { ADMIN_ROLE } from "../../config/constants";
+
 const HeaderPage = () => {
     const [open, setOpen] = useState(false);
     const showDrawer = () => {
@@ -64,11 +66,22 @@ const LeftMenu = ({ mode }: { mode: MenuMode }) => {
 };
 export const RightMenu = () => {
     const router = useRouter()
-    const [isLogged, setIsLogged] = useState(false);
+    const [isLogged, setIsLogged] = useState<boolean>(false);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
     useEffect(() => {
-        setIsLogged(localStorage.getItem('access_token') ? true : false)
+        ; (async function () {
+            setIsLogged(localStorage.getItem('access_token') ? true : false)
+            if (localStorage.getItem('access_token')) {
+                const res = await getAccount()
+                if (res.data && res.data.data) {
+                    setIsAdmin(res.data.data.role.name === ADMIN_ROLE ? true : false)
+                }
+            }
+        })()
     }, [localStorage.getItem('access_token')])
+
+    //check adminUser
 
     const handleLogout = async () => {
         const res = await callLogout();
@@ -76,35 +89,58 @@ export const RightMenu = () => {
             localStorage.removeItem('access_token')
             message.success('Logout success');
             router.push('/')
+            setIsLogged(false)
+        } else {
+            message.error('An error occurred, please try again!')
         }
     }
 
-    const items: MenuProps['items'] = [
-        {
-            key: '1',
-            label: (
-                <a target="_blank" >
-                    Profile
-                </a>
-            ),
-        },
-        {
-            key: '2',
-            label: (
-                <Link href='/admin' >
-                    Admin page
-                </Link>
-            ),
-        },
-        {
-            key: '3',
-            label: (
-                <span style={{ cursor: 'pointer' }} onClick={() => handleLogout()}>
-                    Logout
-                </span>
-            ),
-        },
-    ];
+    const items: MenuProps['items'] = isAdmin ?
+        [
+            {
+                key: '1',
+                label: (
+                    <a target="_blank" >
+                        Profile
+                    </a>
+                ),
+            },
+            {
+                key: '2',
+                label: (
+                    <Link href='/admin' >
+                        Admin page
+                    </Link>
+                ),
+            },
+            {
+                key: '3',
+                label: (
+                    <span style={{ cursor: 'pointer' }} onClick={() => handleLogout()}>
+                        Logout
+                    </span>
+                ),
+            },
+        ]
+        :
+        [
+            {
+                key: '1',
+                label: (
+                    <a target="_blank" >
+                        Profile
+                    </a>
+                ),
+            },
+            {
+                key: '2',
+                label: (
+                    <span style={{ cursor: 'pointer' }} onClick={() => handleLogout()}>
+                        Logout
+                    </span>
+                ),
+            },
+        ]
 
     return (
         <>

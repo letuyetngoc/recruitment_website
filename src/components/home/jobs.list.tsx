@@ -1,7 +1,6 @@
 'use client'
 import { EnvironmentOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Typography } from 'antd'
-import Meta from 'antd/es/card/Meta';
 import React from 'react'
 const { Title } = Typography;
 

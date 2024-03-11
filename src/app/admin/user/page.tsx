@@ -39,7 +39,6 @@ const Page = () => {
   const debouncedEmailSearch = useDebounce<string | null>(email, 800)
   const debouncedNameSearch = useDebounce<string | null>(name, 800)
 
-  console.log('tableParams.pagination user', tableParams.pagination)
 
   //fetch data user for table
   useEffect(() => {
